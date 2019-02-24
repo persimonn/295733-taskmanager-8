@@ -48,8 +48,20 @@ const cardData = [
     isCardEdit: false,
     isCardRepeat: false,
     isCardDeadline: false
-  }
+  },
+  {
+    color: `pink`,
+    isColorBarWave: false,
+    cardText: `It is example of repeating task. It marks by wave.`,
+    isCardEdit: false,
+    isCardRepeat: true,
+    isCardDeadline: false
+  },
 ];
+
+
+const filterContainer = document.querySelector(`.main__filter`);
+const cardContainer = document.querySelector(`.board__tasks`);
 
 function getFilterElement(caption, amount, isChecked = false, isDisabled = false) {
   return `
@@ -58,28 +70,29 @@ function getFilterElement(caption, amount, isChecked = false, isDisabled = false
       id="filter__${caption.toLowerCase()}"
       class="filter__input visually-hidden"
       name="filter"
-      ${isChecked ? " checked" : ""}
-      ${isDisabled ? " disabled" : ""}
+      ${isChecked ? ` checked` : ``}
+      ${isDisabled ? ` disabled` : ``}
     />
     <label for="filter__${caption.toLowerCase()}" class="filter__label">
       ${caption.toUpperCase()} <span class="filter__${caption.toLowerCase()}-count">${amount}</span>
     </label>
     `;
 }
-const filterContainer = document.querySelector('.main__filter');
+
+
 function renderFilters() {
-  filterContainer.insertAdjacentHTML('beforeend', getFilterElement('all', 15, true, false));
-  filterContainer.insertAdjacentHTML('beforeend', getFilterElement('overdue', 0, false, true));
-  filterContainer.insertAdjacentHTML('beforeend', getFilterElement('today', 0, false, true));
-  filterContainer.insertAdjacentHTML('beforeend', getFilterElement('favorites', 7, false, false));
-  filterContainer.insertAdjacentHTML('beforeend', getFilterElement('repeating', 2, false, false));
-  filterContainer.insertAdjacentHTML('beforeend', getFilterElement('tags', 6, false, false));
-  filterContainer.insertAdjacentHTML('beforeend', getFilterElement('archive', 115, false, false));
+  filterContainer.insertAdjacentHTML(`beforeend`, getFilterElement(`all`, 15, true, false));
+  filterContainer.insertAdjacentHTML(`beforeend`, getFilterElement(`overdue`, 0, false, true));
+  filterContainer.insertAdjacentHTML(`beforeend`, getFilterElement(`today`, 0, false, true));
+  filterContainer.insertAdjacentHTML(`beforeend`, getFilterElement(`favorites`, 7, false, false));
+  filterContainer.insertAdjacentHTML(`beforeend`, getFilterElement(`repeating`, 2, false, false));
+  filterContainer.insertAdjacentHTML(`beforeend`, getFilterElement(`tags`, 6, false, false));
+  filterContainer.insertAdjacentHTML(`beforeend`, getFilterElement(`archive`, 115, false, false));
 }
 
 function getCardElement(color, isColorBarWave = false, cardText, isCardEdit = false, isCardRepeat = false, isCardDeadline = false) {
   return `
-    <article class="card ${isCardEdit ? ' card--edit' : ''} ${isCardRepeat ? ' card--repeat' : ''} ${isCardDeadline ? 'card--deadline' : ''} card--${color.toLowerCase()}">
+    <article class="card ${isCardEdit ? ` card--edit` : ``} ${isCardRepeat ? ` card--repeat` : ``} ${isCardDeadline ? `card--deadline` : ``} card--${color.toLowerCase()}">
       <form class="card__form" method="get">
         <div class="card__inner">
           <div class="card__control">
@@ -97,7 +110,7 @@ function getCardElement(color, isColorBarWave = false, cardText, isCardEdit = fa
             </div>
 
             <div class="card__color-bar">
-              <svg class="${isColorBarWave ? ' card__color-bar-wave' : ''}" width="100%" height="10">
+              <svg class="${isColorBarWave ? ` card__color-bar-wave` : ``}" width="100%" height="10">
                 <use xlink:href="#wave"></use>
               </svg>
             </div>
@@ -291,14 +304,13 @@ function getCardElement(color, isColorBarWave = false, cardText, isCardEdit = fa
 }
 
 function renderCards() {
-  const cardContainer = document.querySelector('.board__tasks');
-  cardContainer.insertAdjacentHTML('beforeend', getCardElement(cardData[0].color, cardData[0].isColorBarWave, cardData[0].cardText, cardData[0].isCardEdit));
-  cardContainer.insertAdjacentHTML('beforeend', getCardElement(cardData[1].color, cardData[1].isColorBarWave, cardData[1].cardText, cardData[1].isCardEdit));
-  cardContainer.insertAdjacentHTML('beforeend', getCardElement(cardData[2].color, cardData[2].isColorBarWave, cardData[2].cardText, cardData[2].isCardEdit));
-  cardContainer.insertAdjacentHTML('beforeend', getCardElement(cardData[3].color, cardData[3].isColorBarWave, cardData[3].cardText, cardData[3].isCardEdit));
-  cardContainer.insertAdjacentHTML('beforeend', getCardElement(cardData[4].color, cardData[4].isColorBarWave, cardData[4].cardText, cardData[4].isCardEdit));
-  cardContainer.insertAdjacentHTML('beforeend', getCardElement(cardData[5].color, cardData[5].isColorBarWave, cardData[5].cardText, cardData[5].isCardEdit));
-  cardContainer.insertAdjacentHTML('beforeend', getCardElement(cardData[0].color, cardData[0].isColorBarWave, cardData[0].cardText, cardData[0].isCardEdit));
+  cardContainer.insertAdjacentHTML(`beforeend`, getCardElement(cardData[0].color, cardData[0].isColorBarWave, cardData[0].cardText, cardData[0].isCardEdit));
+  cardContainer.insertAdjacentHTML(`beforeend`, getCardElement(cardData[1].color, cardData[1].isColorBarWave, cardData[1].cardText, cardData[1].isCardEdit));
+  cardContainer.insertAdjacentHTML(`beforeend`, getCardElement(cardData[2].color, cardData[2].isColorBarWave, cardData[2].cardText, cardData[2].isCardEdit));
+  cardContainer.insertAdjacentHTML(`beforeend`, getCardElement(cardData[3].color, cardData[3].isColorBarWave, cardData[3].cardText, cardData[3].isCardEdit));
+  cardContainer.insertAdjacentHTML(`beforeend`, getCardElement(cardData[4].color, cardData[4].isColorBarWave, cardData[4].cardText, cardData[4].isCardEdit));
+  cardContainer.insertAdjacentHTML(`beforeend`, getCardElement(cardData[5].color, cardData[5].isColorBarWave, cardData[5].cardText, cardData[5].isCardEdit));
+  cardContainer.insertAdjacentHTML(`beforeend`, getCardElement(cardData[6].color, cardData[6].isColorBarWave, cardData[6].cardText, cardData[0].isCardEdit));
 }
 
 renderFilters();
@@ -309,26 +321,14 @@ function getRandomNumberInInterval(min, max) {
 }
 
 function filterCards() {
-  const cardContainer = document.querySelector('.board__tasks');
-  let removableElements = cardContainer.querySelectorAll('article.card');
+  const removableElements = cardContainer.querySelectorAll(`article.card`);
   removableElements.forEach((elem) => cardContainer.removeChild(elem));
-  let filteredCardAmount = getRandomNumberInInterval(1, 7);
+  const filteredCardAmount = getRandomNumberInInterval(1, 7);
   for (let i = 0; i < filteredCardAmount; i++) {
-    cardContainer.insertAdjacentHTML('beforeend', getCardElement(cardData[i].color, cardData[i].isColorBarWave, cardData[i].cardText, cardData[i].isCardEdit));
+    cardContainer.insertAdjacentHTML(`beforeend`, getCardElement(cardData[i].color, cardData[i].isColorBarWave, cardData[i].cardText, cardData[i].isCardEdit));
   }
 }
 
-function applyFilter() {
-  filterContainer.addEventListener('click', function (evt) {
-    let currentCheckedFilter = filterContainer.querySelector('[checked]');
-    currentCheckedFilter.removeAttribute('checked');
-    let clickedFilterId = evt.target.id;
-    let clickedFilter = document.getElementById(clickedFilterId);
-    console.log(clickedFilter);
-    clickedFilter.setAttribute('checked', '');
-
-    filterCards();  // IS NOT CALLED!
-  });
-}
-
-filterCards();
+filterContainer.addEventListener(`click`, function () {
+  filterCards();
+});
