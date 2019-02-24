@@ -1,5 +1,50 @@
 'use strict';
 
+const filterFeatures = [
+  {
+    caption: `all`,
+    amount: 15,
+    isChecked: true,
+    isDisabled: false
+  },
+  {
+    caption: `overdue`,
+    amount: 0,
+    isChecked: false,
+    isDisabled: true
+  },
+  {
+    caption: `today`,
+    amount: 0,
+    isChecked: false,
+    isDisabled: true
+  },
+  {
+    caption: `favorites`,
+    amount: 7,
+    isChecked: false,
+    isDisabled: false
+  },
+  {
+    caption: `repeating`,
+    amount: 2,
+    isChecked: false,
+    isDisabled: false
+  },
+  {
+    caption: `tags`,
+    amount: 6,
+    isChecked: false,
+    isDisabled: false
+  },
+  {
+    caption: `archive`,
+    amount: 115,
+    isChecked: false,
+    isDisabled: false
+  }
+];
+
 const cardData = [
   {
     color: `black`,
@@ -36,7 +81,7 @@ const cardData = [
   {
     color: `blue`,
     isColorBarWave: false,
-    cardText: ``,
+    cardText: `This is a blue card`,
     isCardEdit: false,
     isCardRepeat: false,
     isCardDeadline: false
@@ -44,7 +89,7 @@ const cardData = [
   {
     color: `blue`,
     isColorBarWave: false,
-    cardText: ``,
+    cardText: `Test card`,
     isCardEdit: false,
     isCardRepeat: false,
     isCardDeadline: false
@@ -59,11 +104,10 @@ const cardData = [
   },
 ];
 
-
 const filterContainer = document.querySelector(`.main__filter`);
 const cardContainer = document.querySelector(`.board__tasks`);
 
-function getFilterElement(caption, amount, isChecked = false, isDisabled = false) {
+const getFilterElement = (caption, amount, isChecked = false, isDisabled = false) => {
   return `
     <input
       type="radio"
@@ -77,20 +121,9 @@ function getFilterElement(caption, amount, isChecked = false, isDisabled = false
       ${caption.toUpperCase()} <span class="filter__${caption.toLowerCase()}-count">${amount}</span>
     </label>
     `;
-}
+};
 
-
-function renderFilters() {
-  filterContainer.insertAdjacentHTML(`beforeend`, getFilterElement(`all`, 15, true, false));
-  filterContainer.insertAdjacentHTML(`beforeend`, getFilterElement(`overdue`, 0, false, true));
-  filterContainer.insertAdjacentHTML(`beforeend`, getFilterElement(`today`, 0, false, true));
-  filterContainer.insertAdjacentHTML(`beforeend`, getFilterElement(`favorites`, 7, false, false));
-  filterContainer.insertAdjacentHTML(`beforeend`, getFilterElement(`repeating`, 2, false, false));
-  filterContainer.insertAdjacentHTML(`beforeend`, getFilterElement(`tags`, 6, false, false));
-  filterContainer.insertAdjacentHTML(`beforeend`, getFilterElement(`archive`, 115, false, false));
-}
-
-function getCardElement(color, isColorBarWave = false, cardText, isCardEdit = false, isCardRepeat = false, isCardDeadline = false) {
+const getCardElement = (color, isColorBarWave = false, cardText, isCardEdit = false, isCardRepeat = false, isCardDeadline = false) => {
   return `
     <article class="card ${isCardEdit ? ` card--edit` : ``} ${isCardRepeat ? ` card--repeat` : ``} ${isCardDeadline ? `card--deadline` : ``} card--${color.toLowerCase()}">
       <form class="card__form" method="get">
@@ -301,33 +334,35 @@ function getCardElement(color, isColorBarWave = false, cardText, isCardEdit = fa
       </form>
     </article>
   `;
-}
+};
 
-function renderCards() {
-  cardContainer.insertAdjacentHTML(`beforeend`, getCardElement(cardData[0].color, cardData[0].isColorBarWave, cardData[0].cardText, cardData[0].isCardEdit));
-  cardContainer.insertAdjacentHTML(`beforeend`, getCardElement(cardData[1].color, cardData[1].isColorBarWave, cardData[1].cardText, cardData[1].isCardEdit));
-  cardContainer.insertAdjacentHTML(`beforeend`, getCardElement(cardData[2].color, cardData[2].isColorBarWave, cardData[2].cardText, cardData[2].isCardEdit));
-  cardContainer.insertAdjacentHTML(`beforeend`, getCardElement(cardData[3].color, cardData[3].isColorBarWave, cardData[3].cardText, cardData[3].isCardEdit));
-  cardContainer.insertAdjacentHTML(`beforeend`, getCardElement(cardData[4].color, cardData[4].isColorBarWave, cardData[4].cardText, cardData[4].isCardEdit));
-  cardContainer.insertAdjacentHTML(`beforeend`, getCardElement(cardData[5].color, cardData[5].isColorBarWave, cardData[5].cardText, cardData[5].isCardEdit));
-  cardContainer.insertAdjacentHTML(`beforeend`, getCardElement(cardData[6].color, cardData[6].isColorBarWave, cardData[6].cardText, cardData[0].isCardEdit));
-}
+const renderFilters = () => {
+  filterFeatures.forEach((item) => {
+    filterContainer.insertAdjacentHTML(`beforeend`, getFilterElement(item.caption, item.amount, item.isChecked, item.isDisabled));
+  });
+};
 
-renderFilters();
-renderCards();
+const renderCards = () => {
+  cardData.forEach((item) => {
+    cardContainer.insertAdjacentHTML(`beforeend`, getCardElement(item.color, item.isColorBarWave, item.cardText, item.isCardEdit));
+  });
+};
 
-function getRandomNumberInInterval(min, max) {
+const getRandomNumberInInterval = (min, max) => {
   return Math.floor(Math.random() * (max - min + 1) + min);
-}
+};
 
-function filterCards() {
+const filterCards = () => {
   const removableElements = cardContainer.querySelectorAll(`article.card`);
   removableElements.forEach((elem) => cardContainer.removeChild(elem));
   const filteredCardAmount = getRandomNumberInInterval(1, 7);
   for (let i = 0; i < filteredCardAmount; i++) {
     cardContainer.insertAdjacentHTML(`beforeend`, getCardElement(cardData[i].color, cardData[i].isColorBarWave, cardData[i].cardText, cardData[i].isCardEdit));
   }
-}
+};
+
+renderFilters();
+renderCards();
 
 filterContainer.addEventListener(`click`, function () {
   filterCards();
